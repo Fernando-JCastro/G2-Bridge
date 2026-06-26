@@ -8,6 +8,8 @@
                     "leaflet","leaflet.extras2","DT","sf","terra",
                        "dplyr","tidyr","ggplot2","GeoRange","httr2",
                        "jsonlite","zip","base64enc","htmlwidgets"))
+
+remotes::install_github("Fernando-JCastro/Eliat")
 # ══════════════════════════════════════════════════════════════════════════════
 
 library(shiny)
@@ -143,13 +145,13 @@ server <- function(input, output, session) {
         incProgress(0.25)
         
         df_genbank <- tryCatch(
-          search_gb_seq(
+          Eliat::search_gb_seq(
             organism = taxon$nombre_valido,
             marker   = input$marcador_genbank %||% "",
             country  = input$filtro_pais %||% "",
             max_retry = 3
           ) |>
-            get_metadata(),
+            Eliat::get_metadata(),
           error = function(e) {
             showNotification(paste("Error GenBank:", e$message), type = "warning")
             NULL
